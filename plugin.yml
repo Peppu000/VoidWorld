@@ -1,0 +1,9 @@
+name: VoidWorld
+version: 0.0.1
+main: Peppu\VoidWorld\Main
+api: 5.35.0
+src-namespace-prefix: Peppu\VoidWorld
+
+permissions:
+  voidworld.command:
+    default: op
