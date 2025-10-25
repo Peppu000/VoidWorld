@@ -5,28 +5,19 @@ declare(strict_types=1);
 namespace Peppu\VoidWorld;
 
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
-use pocketmine\utils\SingletonTrait;
+use pocketmine\Server;
 use pocketmine\world\generator\GeneratorManager;
 
 final class Main extends PluginBase {
-	use SingletonTrait;
-
-	public function onLoad(): void {
-		$this->setInstance($this);
-	}
-
-    public function onEnable() : void {
-        $this->saveDefaultConfig();
-		// ジェネレーターも登録
+	
+	public function onEnable() : void {
 		GeneratorManager::getInstance()->addGenerator(VoidGenerator::class, "void", fn() => null, true);
-			
-		// コマンド登録
 		$this->getServer()->getCommandMap()->register("voidworld", new VoidWorldCommand);
 
-		// ワールドロード
-        $worlds = $this->getConfig()->get("worlds", []);
+		$worldDir = Server::getInstance()->getDataPath() . "/worlds";
+        $worlds = scandir($worldDir);
 		foreach ($worlds as $world) {
+			if (!is_dir($worldDir."/".$world) || $world === "." || $world === "..") continue;
 			$this->getServer()->getWorldManager()->loadWorld($world);
 		}
 	}
