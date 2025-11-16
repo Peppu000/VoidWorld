@@ -6,6 +6,7 @@ namespace Peppu\VoidWorld;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\world\WorldCreationOptions;
@@ -26,7 +27,6 @@ final class VoidWorldCommand extends Command {
                 $sender->sendMessage("Usage: /voidworld create <name>\nUsage: /voidworld tp <name>\nUsage: /voidworld list");
                 return;
         }
-
         switch ($args[0]) {
         case "create":
             if (!isset($args[1])) {
@@ -35,6 +35,7 @@ final class VoidWorldCommand extends Command {
             }
             $worldOption = new WorldCreationOptions();
             $worldOption->setGeneratorClass(VoidGenerator::class);
+            $worldOption->setSpawnPosition(new Vector3(0, 0, 0));
             Server::getInstance()->getWorldManager()->generateWorld($args[1], $worldOption);
             break;
         case "tp":
